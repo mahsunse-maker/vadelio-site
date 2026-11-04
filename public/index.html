@@ -81,6 +81,12 @@
   .tool h3 { margin: 14px 0 6px; font-size: 22px; }
   .tool p { margin: 0; font-size: 15px; color: rgba(255, 255, 255, .85); }
   .tool .ico { position: absolute; right: 18px; top: 16px; font-size: 44px; opacity: .25; }
+  a.tool { display: block; text-decoration: none; transition: transform .15s; }
+  a.tool:hover { transform: translateY(-2px); }
+  .tool .web { display: inline-block; margin-top: 14px; font-weight: 700; font-size: 15px; color: var(--gold-soft); }
+  .web-hesap { margin: 14px 0 0; font-size: 15px; color: rgba(255, 255, 255, .85); }
+  .web-hesap a { color: var(--gold-soft); font-weight: 700; }
+  .web-hesap span { opacity: .7; font-size: 13px; }
   .t-kredi { background: linear-gradient(135deg, #0B7A5A, #004532); }
   .t-cek { background: linear-gradient(135deg, #1C2B25, #0A1410); border: 1.5px solid rgba(227, 194, 91, .7); }
   .t-cek h3 { color: #E3C25B; }
@@ -146,6 +152,8 @@
   <div class="wrap">
     <a class="brand" href="/"><img src="/wordmark.svg" alt="Vadelio"></a>
     <nav>
+      <a href="/kredi-hesaplama/">Kredi hesapla</a>
+      <a href="/mevduat-hesaplama/">Mevduat hesapla</a>
       <a href="#araclar">Araçlar</a>
       <a href="#ekranlar">Ekranlar</a>
       <a href="#fiyat">Fiyat</a>
@@ -172,6 +180,7 @@
           </a>
         </div>
         <p class="note">Hesap yok. Takip yok. Hesapların ve çeklerin telefonunda kalır.</p>
+        <p class="web-hesap">Hemen dene: <a href="/kredi-hesaplama/">Kredi hesapla</a> · <a href="/mevduat-hesaplama/">Mevduat hesapla</a> <span>web'de ücretsiz</span></p>
       </div>
       <div class="phone" aria-hidden="true">
         <div class="screen">
@@ -189,9 +198,9 @@
       <h2>Dört araç, tek uygulama</h2>
       <p class="sub">Uygulamayı açtığında seni bu dört kart karşılar. Her biri, bankada masaya oturmadan önce bilmen gerekenleri gösterir.</p>
       <div class="tools">
-        <div class="tool t-kredi"><span class="ico">🧮</span><span class="tag">Banka yöntemiyle</span><h3>Kredi hesapla</h3><p>Aylık taksit, toplam maliyet ve gün gün ödeme planı. Ödemesiz dönem, KKDF ve BSMV dahil; tatil günleri sonraki iş gününe kayar.</p></div>
+        <a class="tool t-kredi" href="/kredi-hesaplama/"><span class="ico">🧮</span><span class="tag">Banka yöntemiyle</span><h3>Kredi hesapla</h3><p>Aylık taksit, toplam maliyet ve gün gün ödeme planı. Ödemesiz dönem, KKDF ve BSMV dahil; tatil günleri sonraki iş gününe kayar.</p><span class="web">Web'de hesapla →</span></a>
         <div class="tool t-cek"><span class="ico">🧾</span><span class="tag">PRO · Ayrıcalıklı</span><h3>Çek portföyü</h3><p>Çek listeni Excel'den yükle, vadesi yaklaşanları renkli gör, bankaya ve keşideciye göre tasnif et; çek vadesine göre finansman hesapla.</p></div>
-        <div class="tool t-mevduat"><span class="ico">🏦</span><span class="tag">Getiri hesabı</span><h3>Mevduat hesapla</h3><p>Vadeli mevduat ya da katılma hesabının net getirisi. Yasal stopaj vadeye göre kendiliğinden uygulanır.</p></div>
+        <a class="tool t-mevduat" href="/mevduat-hesaplama/"><span class="ico">🏦</span><span class="tag">Getiri hesabı</span><h3>Mevduat hesapla</h3><p>Vadeli mevduat ya da katılma hesabının net getirisi. Yasal stopaj vadeye göre kendiliğinden uygulanır.</p><span class="web">Web'de hesapla →</span></a>
         <div class="tool t-diger"><span class="ico">🧰</span><span class="tag">3 araç</span><h3>Diğer hesaplamalar</h3><p>Ne kadar kredi alabilirim, erken kapama ve ara ödeme, farklı vade ve oranları yan yana karşılaştırma.</p></div>
       </div>
     </div>

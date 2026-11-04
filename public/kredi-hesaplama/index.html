@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kredi Hesaplama: Taksit ve Ödeme Planı | Vadelio</title>
+<meta name="description" content="Ücretsiz kredi hesaplama: aylık taksit, toplam maliyet ve gün gün ödeme planı. KKDF, BSMV, ödemesiz dönem ve resmi tatiller dahil; katılım bankalarının yöntemiyle. Üyelik yok.">
+<link rel="canonical" href="https://vadelio.com.tr/kredi-hesaplama/">
+<meta property="og:title" content="Kredi Hesaplama: Taksit ve Ödeme Planı | Vadelio">
+<meta property="og:description" content="Aylık taksit, toplam maliyet ve gün gün ödeme planı. KKDF, BSMV, ödemesiz dönem ve tatiller dahil.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vadelio.com.tr/kredi-hesaplama/">
+<meta property="og:image" content="https://vadelio.com.tr/og.png">
+<meta name="theme-color" content="#004532">
+<link rel="icon" type="image/svg+xml" href="/logo.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/hesap/hesap.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Vadelio Kredi Hesaplama",
+      "url": "https://vadelio.com.tr/kredi-hesaplama/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "tr",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TRY" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Kredi taksiti nasıl hesaplanır?", "acceptedAnswer": { "@type": "Answer", "text": "Kâr payı (faiz) kalan anaparaya, iki ödeme arasındaki gün sayısı × aylık oran / 30 olarak işler. Taksit, vade sonunda borcu tam kapatan en küçük eşit tutardır; kuruşa aşağı yuvarlanır, kalan kuruş farkı son taksite eklenir." } },
+        { "@type": "Question", "name": "KKDF ve BSMV hangi kredilerde alınır?", "acceptedAnswer": { "@type": "Answer", "text": "Bireysel (ihtiyaç) ve taşıt kredilerinde kâr payı üzerinden %15 KKDF ve %15 BSMV, ticari kredilerde %5 BSMV alınır. Konut kredisi bu vergilerden muaftır." } },
+        { "@type": "Question", "name": "Ödemesiz dönemde ne olur?", "acceptedAnswer": { "@type": "Answer", "text": "Ödemesiz dönemde işleyen kâr payı ilk taksitlerden öncelikle tahsil edilir; bu birikmiş kâr payına ayrıca kâr işlemez." } },
+        { "@type": "Question", "name": "Taksit tarihi tatile denk gelirse ne olur?", "acceptedAnswer": { "@type": "Answer", "text": "Hafta sonu ve resmi tatillere (dini bayramlar dahil) denk gelen taksit sonraki iş gününe kayar; aradaki gün sayısı arttığı için o dönemin kâr payı da artar." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/wordmark.svg" alt="Vadelio" width="140" height="36"></a>
+    <nav>
+      <a href="/kredi-hesaplama/" aria-current="page">Kredi</a>
+      <a href="/mevduat-hesaplama/">Mevduat</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <h1>Kredi hesaplama</h1>
+    <p>Aylık taksiti, toplam maliyeti ve gün gün ödeme planını bankaların yöntemiyle görün. KKDF, BSMV, ödemesiz dönem ve resmi tatiller hesaba katılır. Ücretsiz, üyeliksiz; girdiğiniz bilgiler tarayıcınızdan çıkmaz.</p>
+  </div>
+
+  <div class="layout">
+    <form class="col" id="form" autocomplete="off" onsubmit="return false">
+      <div class="turler" role="group" aria-label="Kredi türü" id="turler"></div>
+
+      <div class="kart">
+        <div class="alan">
+          <label class="alan-basligi" for="tutar">Finansman tutarı</label>
+          <div class="girdi"><input id="tutar" inputmode="numeric" value="100.000"><span class="ek son">TL</span></div>
+        </div>
+        <div class="satir2" style="margin-top:16px">
+          <div>
+            <label class="alan-basligi" for="oran">Aylık kâr payı</label>
+            <div class="girdi"><span class="ek on">%</span><input id="oran" inputmode="decimal" value="3,5"></div>
+          </div>
+          <div>
+            <label class="alan-basligi" for="vade">Vade</label>
+            <div class="girdi"><input id="vade" inputmode="numeric" value="12"><span class="ek son">ay</span></div>
+          </div>
+        </div>
+        <div class="referans" id="referans" hidden>
+          <div class="metin">
+            Piyasa ortalaması <strong id="refOran"></strong> aylık
+            <small id="refTarih"></small>
+            <details><summary>Bu oran nedir?</summary><span id="refAciklama"></span></details>
+          </div>
+          <button type="button" id="refKullan">Kullan</button>
+        </div>
+        <div class="cipler" id="vadeler" role="group" aria-label="Vade önerileri"></div>
+      </div>
+
+      <div class="kart">
+        <div class="satir2">
+          <div>
+            <label class="alan-basligi" for="finansman">Finansman tarihi</label>
+            <div class="girdi"><input id="finansman" type="date"></div>
+          </div>
+          <div>
+            <label class="alan-basligi" for="ilkTaksit">İlk taksit</label>
+            <div class="girdi"><input id="ilkTaksit" type="date"></div>
+          </div>
+        </div>
+        <div class="alan" style="margin-top:16px">
+          <div class="alan-basligi"><span>Ödemesiz dönem</span><span class="rozet" id="odemesizRozet">Yok</span></div>
+          <div class="cipler" id="odemesizler" role="group" aria-label="Ödemesiz dönem" style="margin-top:0"></div>
+          <p class="ipucu">İlk taksit normalde finansmandan 1 ay sonradır. Daha ileri bir tarih seçerseniz aradaki süre ödemesiz dönem olur.</p>
+        </div>
+      </div>
+    </form>
+
+    <div class="col sticky" aria-live="polite">
+      <div id="sonuclar" class="col"></div>
+      <p class="uyari-notu">Sonuçlar tahmini ve bilgilendirme amaçlıdır; finans kuruluşu teklifi veya bağlayıcı bir taahhüt değildir. Gerçek oranlar, vergiler ve ödeme koşulları kuruma göre değişebilir.</p>
+    </div>
+  </div>
+
+  <div class="kart" id="planKart" style="margin-top:6px">
+    <div class="plan-ust">
+      <h2 class="alan-basligi" style="font-size:16px;color:var(--ink)">Ödeme planı</h2>
+      <button type="button" id="yazdir">Yazdır</button>
+    </div>
+    <div class="tablo-kutu"><table class="plan" id="planTablo"></table></div>
+    <ul class="notlar" id="notlar"></ul>
+  </div>
+
+  <div class="kart uygulama" style="margin-top:20px">
+    <h2>Daha fazlası Vadelio uygulamasında</h2>
+    <p>Bu hesaplayıcı uygulamadaki kredi hesabının aynısıdır. Uygulamada ayrıca:</p>
+    <ul>
+      <li>Ne kadar kredi alabilirim, erken kapama ve ara ödeme</li>
+      <li>Farklı oran ve vadeleri yan yana karşılaştırma</li>
+      <li>Çek vadesine göre finansman ve çek portföyü <span>PRO</span></li>
+      <li>Logolu, markalı PDF ödeme planı <span>PRO</span></li>
+    </ul>
+    <div class="magazalar" data-magaza></div>
+  </div>
+
+  <section class="yazi">
+    <h2>Kredi taksiti nasıl hesaplanır?</h2>
+    <p>Vadelio, katılım bankalarının eşit taksitli geri ödeme planını birebir uygular:</p>
+    <ol>
+      <li><strong>Gün sayısıyla kâr payı.</strong> Her dönemin kâr payı, kalan anaparaya gün sayısı × aylık oran / 30 olarak işler. 31 gün süren bir dönem, 28 gün sürenden daha fazla kâr payı doğurur.</li>
+      <li><strong>İş gününe kayma.</strong> Hafta sonu ve resmi tatillere (Ramazan ve Kurban Bayramı dahil) denk gelen taksit sonraki iş gününe kayar.</li>
+      <li><strong>Ödemesiz dönem.</strong> Bu sürede işleyen kâr payı ilk taksitlerden öncelikle tahsil edilir; birikmiş kâr payına ayrıca kâr işlemez.</li>
+      <li><strong>Vergiler.</strong> Bireysel ve taşıt kredisinde kâr payı üzerinden %15 KKDF ve %15 BSMV, ticari kredide %5 BSMV eklenir; konut kredisi muaftır.</li>
+      <li><strong>Kuruş yuvarlaması.</strong> Taksit kuruşa aşağı yuvarlanır, artan kuruş farkı son taksite eklenir.</li>
+    </ol>
+    <p>Bu yöntemle çıkan plan, bir katılım bankasının gerçek ödeme planıyla kuruşu kuruşuna karşılaştırılarak doğrulanmıştır.</p>
+
+    <h2 style="margin-top:28px">Sık sorulanlar</h2>
+    <details><summary>"Yıllık maliyet oranı" neyi gösterir?</summary><p>Vergiler ve gerçek ödeme tarihleri dahil, taksitlerin bugünkü değerini kredi tutarına eşitleyen oranın yıllık bileşik karşılığıdır. Farklı tekliflerin toplam maliyetini karşılaştırmak için kullanılır.</p></details>
+    <details><summary>Piyasa ortalaması oran nereden geliyor?</summary><p>Türkiye Cumhuriyet Merkez Bankası'nın her hafta yayımladığı, bankaların yeni kullandırdığı kredilere uyguladığı ağırlıklı ortalama orandan. TCMB oranı efektif yıllık yayımlar; burada bankaların ilan ettiği gibi aylık karşılığı gösterilir. Size özel teklif farklı olabilir.</p></details>
+    <details><summary>Faizli kredilerde de kullanılabilir mi?</summary><p>Evet. Hesap yöntemi aynıdır; "kâr payı" yerine "faiz" diye okuyabilirsiniz. Bankanızın ilan ettiği aylık oranı girmeniz yeterlidir.</p></details>
+    <details><summary>Girdiğim bilgiler bir yere gönderiliyor mu?</summary><p>Hayır. Hesap tamamen tarayıcınızda yapılır; tutar, oran ve tarihler hiçbir sunucuya gönderilmez. Sayfa yalnızca TCMB ortalama oranlarını içeren herkese açık dosyayı indirir.</p></details>
+
+    <h2 style="margin-top:28px">Diğer hesaplayıcılar</h2>
+    <div class="diger">
+      <a href="/mevduat-hesaplama/"><b>Mevduat hesaplama</b><span>Vadeli mevduat ve katılma hesabının stopaj sonrası net getirisi.</span></a>
+      <a href="/"><b>Vadelio uygulaması</b><span>Çek portföyü, çek vadesine göre finansman ve fazlası.</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Vadelio</span>
+    <span><a href="/privacy/">Gizlilik Politikası</a> · <a href="mailto:mahsunse@gmail.com">İletişim</a></span>
+  </div>
+</footer>
+
+<script src="/hesap/vadelio-hesap.js"></script>
+<script src="/hesap/arayuz.js"></script>
+<script>
+(() => {
+  "use strict";
+  const V = window.Vadelio, A = window.VadelioArayuz;
+  const $ = (id) => document.getElementById(id);
+
+  const TURLER = [
+    ["Bireysel Kredi", "Bireysel", '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>'],
+    ["Konut Kredisi", "Konut", '<svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>'],
+    ["Taşıt Kredisi", "Taşıt", '<svg viewBox="0 0 24 24"><path d="M5 16V11l2-5h10l2 5v5"/><path d="M3 16h18v3H3z"/><circle cx="7.5" cy="16" r="1.5"/><circle cx="16.5" cy="16" r="1.5"/></svg>'],
+    ["Ticari Kredi", "Ticari", '<svg viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v7h14v-7"/></svg>'],
+  ];
+  const VADE_ONERILERI = {
+    "Bireysel Kredi": [12, 24, 36],
+    "Konut Kredisi": [60, 120, 180, 240],
+    "Taşıt Kredisi": [12, 24, 36, 48],
+    "Ticari Kredi": [12, 24, 36, 48],
+  };
+  const RENK = { anapara: "#0B7A5A", kar: "#D4AF37", vergi: "#C2410C" };
+
+  const durum = {
+    tur: "Bireysel Kredi",
+    finansman: A.bugun(),
+    secilenIlkTaksit: null, // elle seçilmezse ödemesiz aydan hesaplanır
+    odemesizAy: 0,
+  };
+  let referans = null;
+
+  const ilkTaksit = () => durum.secilenIlkTaksit || V.ayEkle(durum.finansman, durum.odemesizAy + 1);
+  const odemesizGun = () => Math.max(0, V.gunFarki(V.ayEkle(durum.finansman, 1), ilkTaksit()));
+
+  // ----- Kredi türü -----
+  const turKap = $("turler");
+  for (const [tur, etiket, simge] of TURLER) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "tur";
+    b.dataset.tur = tur;
+    b.innerHTML = simge + "<span>" + etiket + "</span>";
+    b.addEventListener("click", () => { durum.tur = tur; ciz(); });
+    turKap.appendChild(b);
+  }
+
+  // ----- Alanlar -----
+  A.tutarAlani($("tutar"), ciz);
+  A.oranAlani($("oran"), ciz);
+  A.tamSayiAlani($("vade"), 3, ciz);
+
+  $("finansman").value = A.tarihDegeri(durum.finansman);
+  $("finansman").addEventListener("change", () => {
+    const t = A.tarihOku($("finansman").value);
+    if (!t) return;
+    durum.finansman = t;
+    durum.secilenIlkTaksit = null;
+    ciz();
+  });
+  $("ilkTaksit").addEventListener("change", () => {
+    const t = A.tarihOku($("ilkTaksit").value);
+    if (!t) return;
+    const enAz = V.gunEkle(durum.finansman, 1), enCok = V.ayEkle(durum.finansman, 7);
+    const secilen = t < enAz ? enAz : t > enCok ? enCok : t;
+    durum.secilenIlkTaksit = secilen;
+    durum.odemesizAy = Math.min(6, Math.max(0, V.ayFarki(durum.finansman, secilen) - 1));
+    ciz();
+  });
+
+  const odemesizKap = $("odemesizler");
+  for (const ay of [0, 1, 2, 3, 6]) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "cip";
+    b.dataset.ay = ay;
+    b.textContent = ay === 0 ? "Yok" : ay + " ay";
+    b.addEventListener("click", () => { durum.odemesizAy = ay; durum.secilenIlkTaksit = null; ciz(); });
+    odemesizKap.appendChild(b);
+  }
+
+  $("refKullan").addEventListener("click", () => {
+    const r = V.referansKredi(referans, durum.tur);
+    if (!r) return;
+    $("oran").value = V.oranYaz(Number(r.aylik.toFixed(2)));
+    ciz();
+  });
+  $("yazdir").addEventListener("click", () => window.print());
+
+  // ----- Çizim -----
+  function hataVeyaPlan() {
+    const tutar = A.tutarOku($("tutar").value);
+    const oran = A.oranOku($("oran").value);
+    const vade = parseInt($("vade").value, 10);
+    if (!(tutar > 0)) return { hata: "Tutarı girin." };
+    if (oran == null) return { hata: "Kâr payı oranını girin." };
+    if (!(vade > 0)) return { hata: "Vadeyi girin." };
+    if (vade > V.MAKSIMUM_VADE) return { hata: "Vade en fazla " + V.MAKSIMUM_VADE + " ay olabilir." };
+    if (oran > 100) return { hata: "Aylık oran %100'den büyük olamaz." };
+    return {
+      plan: V.krediHesapla({
+        tur: durum.tur, tutar, oranYuzde: oran, vade,
+        finansmanTarihi: durum.finansman, ilkTaksitTarihi: ilkTaksit(),
+      }),
+    };
+  }
+
+  function ciz() {
+    // Seçimler
+    turKap.querySelectorAll(".tur").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tur === durum.tur)));
+    const vade = parseInt($("vade").value, 10);
+    const vadeKap = $("vadeler");
+    vadeKap.innerHTML = "";
+    for (const v of VADE_ONERILERI[durum.tur]) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "cip";
+      b.textContent = v + " ay";
+      b.setAttribute("aria-pressed", String(vade === v));
+      b.addEventListener("click", () => { $("vade").value = v; ciz(); });
+      vadeKap.appendChild(b);
+    }
+    const ilk = ilkTaksit();
+    $("ilkTaksit").value = A.tarihDegeri(ilk);
+    $("ilkTaksit").min = A.tarihDegeri(V.gunEkle(durum.finansman, 1));
+    $("ilkTaksit").max = A.tarihDegeri(V.ayEkle(durum.finansman, 7));
+    const og = odemesizGun();
+    $("odemesizRozet").textContent = og === 0 ? "Yok" : og + " gün";
+    odemesizKap.querySelectorAll(".cip").forEach((b) =>
+      b.setAttribute("aria-pressed", String(!durum.secilenIlkTaksit && Number(b.dataset.ay) === durum.odemesizAy)));
+
+    // Piyasa ortalaması
+    const r = V.referansKredi(referans, durum.tur);
+    $("referans").hidden = !r;
+    if (r) {
+      $("refOran").textContent = "%" + V.oranYaz(r.aylik);
+      $("refTarih").textContent = "TCMB" + (r.tarih ? " · " + V.tarihFormat(r.tarih) + " haftası" : "");
+      $("refAciklama").textContent =
+        " Bankaların geçen hafta yeni kullandırdığı bu türdeki kredilerin ağırlıklı ortalaması (TCMB). TCMB oranı efektif yıllık %" +
+        V.oranYaz(r.yillik) + " olarak yayımlar; burada bankaların ilan ettiği gibi aylık karşılığı gösterilir. Size özel teklif farklı olabilir; kesin oranı bankanızdan alın. Vergiler (KKDF, BSMV) hesapta ayrıca eklenir.";
+    }
+
+    // Sonuçlar
+    const { plan, hata } = hataVeyaPlan();
+    const kap = $("sonuclar");
+    kap.innerHTML = "";
+    $("planKart").hidden = !plan;
+    if (!plan) {
+      kap.appendChild(A.el("div", "eksik", hata));
+      return;
+    }
+    kap.appendChild(sonucKarti(plan));
+    kap.appendChild(dagilimKarti(plan));
+    kap.appendChild(oranlarKarti(plan));
+    planTablosu(plan);
+  }
+
+  function sonucKarti(p) {
+    const k = A.el("div", "kart sonuc");
+    k.appendChild(A.el("div", "baslik", "Aylık taksit"));
+    k.appendChild(A.el("div", "deger", V.paraFormat(p.taksit, 2)));
+    const alt = A.el("div", "alt");
+    for (const [e, d] of [
+      ["İlk taksit", V.tarihFormat(p.ilkTaksitTarihi)],
+      ["Taksit sayısı", String(p.vade)],
+      ["Son taksit", V.tarihFormat(p.sonTaksitTarihi)],
+    ]) {
+      const h = A.el("div", null, e);
+      h.appendChild(A.el("b", null, d));
+      alt.appendChild(h);
+    }
+    k.appendChild(alt);
+    return k;
+  }
+
+  function dagilimKarti(p) {
+    const k = A.el("div", "kart");
+    k.appendChild(A.el("div", "alan-basligi", "Geri ödemenin dağılımı"));
+    const d = A.el("div", "dagilim");
+    const toplam = p.tutar + p.netKarPayi + p.vergi;
+    const a1 = (p.tutar / toplam) * 360, a2 = a1 + (p.netKarPayi / toplam) * 360;
+    const halka = A.el("div", "halka");
+    halka.style.background = "conic-gradient(" + RENK.anapara + " 0 " + a1 + "deg, " + RENK.kar + " " + a1 + "deg " + a2 + "deg, " + RENK.vergi + " " + a2 + "deg 360deg)";
+    halka.setAttribute("role", "img");
+    halka.setAttribute("aria-label", "Maliyet, tutarın " + V.yuzdeFormat(p.toplamMaliyet / p.tutar, 0) + " kadarı");
+    const ic = A.el("div", "ic");
+    const icd = A.el("div");
+    icd.appendChild(A.el("small", null, "Maliyet"));
+    icd.appendChild(A.el("b", null, V.yuzdeFormat(p.toplamMaliyet / p.tutar, 0)));
+    ic.appendChild(icd);
+    halka.appendChild(ic);
+    d.appendChild(halka);
+    const sag = A.el("div");
+    sag.appendChild(A.bilgiSatiri("Anapara", V.paraFormat(p.tutar), { nokta: RENK.anapara }));
+    sag.appendChild(A.bilgiSatiri("Kâr payı", V.paraFormat(p.netKarPayi), { nokta: RENK.kar }));
+    sag.appendChild(A.bilgiSatiri("Vergi", V.paraFormat(p.vergi), { nokta: RENK.vergi }));
+    d.appendChild(sag);
+    k.appendChild(d);
+    k.appendChild(A.el("hr", "ayrac"));
+    k.appendChild(A.bilgiSatiri("Toplam geri ödeme", V.paraFormat(p.toplam), { vurgu: true }));
+    return k;
+  }
+
+  function oranlarKarti(p) {
+    const k = A.el("div", "kart");
+    k.appendChild(A.el("div", "alan-basligi", "Oranlar"));
+    const vergiler = p.kkdf + p.bsmv === 0 ? "Muaf" : "KKDF %" + Math.round(p.kkdf * 100) + " · BSMV %" + Math.round(p.bsmv * 100);
+    k.appendChild(A.bilgiSatiri("Yıllık kâr payı (bileşik)", V.yuzdeFormat(p.yillikKarPayiOrani)));
+    k.appendChild(A.bilgiSatiri("Yıllık maliyet oranı", V.yuzdeFormat(p.yillikMaliyetOrani)));
+    k.appendChild(A.bilgiSatiri("Vergiler", vergiler));
+    k.appendChild(A.bilgiSatiri("Ortalama vade", p.ortalamaVadeGun + " gün"));
+    return k;
+  }
+
+  function planTablosu(p) {
+    const t = $("planTablo");
+    const tl = (d) => V.paraFormat(d, 2, false);
+    let h = "<thead><tr><th>No</th><th>Tarih</th><th>Taksit</th><th>Anapara</th><th>Kâr payı</th><th>Vergi</th><th>Kalan</th></tr></thead><tbody>";
+    for (const s of p.satirlar) {
+      h += "<tr><td>" + s.no + "</td><td>" + V.tarihFormat(s.tarih) + '<span class="gun">' + s.gun + " gün</span></td><td>" +
+        tl(s.taksit) + "</td><td>" + tl(s.anapara) + "</td><td>" + tl(s.karPayi) + "</td><td>" + tl(s.vergi) + "</td><td>" + tl(s.kalan) + "</td></tr>";
+    }
+    h += '<tr class="toplam"><td>Toplam</td><td></td><td>' + tl(p.toplam) + "</td><td>" + tl(p.tutar) + "</td><td>" + tl(p.netKarPayi) + "</td><td>" + tl(p.vergi) + "</td><td></td></tr></tbody>";
+    t.innerHTML = h;
+
+    const notlar = [];
+    if (p.satirlar[0].kalanKar > 0 || p.odemesizGun > 0)
+      notlar.push("Ödemesiz dönemde işleyen kâr payı (vergi dahil) ilk taksitlerden öncelikle tahsil edilir.");
+    notlar.push("Kâr payı gün sayısına göre işler; hafta sonu ve resmi tatile denk gelen taksitler sonraki iş gününe kayar.");
+    if (p.vergi > 0)
+      notlar.push("Taksitlere toplam " + V.paraFormat(p.vergi, 2) + " yasal vergi (KKDF %" + Math.round(p.kkdf * 100) + " / BSMV %" + Math.round(p.bsmv * 100) + ") dahildir.");
+    const ul = $("notlar");
+    ul.innerHTML = "";
+    notlar.forEach((n) => ul.appendChild(A.el("li", null, n)));
+  }
+
+  A.referansYukle((r) => { referans = r; ciz(); });
+  ciz();
+})();
+</script>
+</body>
+</html>

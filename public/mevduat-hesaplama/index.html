@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mevduat Hesaplama: Stopaj Sonrası Net Getiri | Vadelio</title>
+<meta name="description" content="Ücretsiz mevduat faizi hesaplama: vadeli mevduat ve katılma hesabının brüt getirisi, yasal stopaj kesintisi ve net getirisi. Stopaj oranı vadeye göre kendiliğinden seçilir. Üyelik yok.">
+<link rel="canonical" href="https://vadelio.com.tr/mevduat-hesaplama/">
+<meta property="og:title" content="Mevduat Hesaplama: Stopaj Sonrası Net Getiri | Vadelio">
+<meta property="og:description" content="Vadeli mevduat ve katılma hesabının stopaj sonrası net getirisi; yasal stopaj vadeye göre kendiliğinden.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vadelio.com.tr/mevduat-hesaplama/">
+<meta property="og:image" content="https://vadelio.com.tr/og.png">
+<meta name="theme-color" content="#004532">
+<link rel="icon" type="image/svg+xml" href="/logo.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/hesap/hesap.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Vadelio Mevduat Hesaplama",
+      "url": "https://vadelio.com.tr/mevduat-hesaplama/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "tr",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TRY" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Mevduat getirisi nasıl hesaplanır?", "acceptedAnswer": { "@type": "Answer", "text": "Brüt getiri = tutar × yıllık oran × gün sayısı / 365. Stopaj brüt getiriden kesilir; kalan net getiri vade sonunda anaparaya eklenir." } },
+        { "@type": "Question", "name": "Mevduatta stopaj oranı kaçtır?", "acceptedAnswer": { "@type": "Answer", "text": "31.12.2026'ya kadar açılan ya da yenilenen TL mevduat ve katılma hesaplarında vadesiz ve 6 aya kadar %17,5, 1 yıla kadar %15, 1 yıldan uzun vadede %10 stopaj uygulanır (11444 sayılı Cumhurbaşkanı Kararı)." } },
+        { "@type": "Question", "name": "Katılma hesabı getirisi nasıl hesaplanır?", "acceptedAnswer": { "@type": "Answer", "text": "Yöntem aynıdır; ancak katılma hesabında kâr payı oranı önceden kesin değildir, dönem sonunda bankanın elde ettiği kâra göre belirlenir. Girilen oran tahmindir." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/wordmark.svg" alt="Vadelio" width="140" height="36"></a>
+    <nav>
+      <a href="/kredi-hesaplama/">Kredi</a>
+      <a href="/mevduat-hesaplama/" aria-current="page">Mevduat</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <h1>Mevduat hesaplama</h1>
+    <p>Vadeli mevduat ya da katılma hesabının stopaj sonrası net getirisini görün. Yasal stopaj oranı vadeye göre kendiliğinden seçilir. Ücretsiz, üyeliksiz; girdiğiniz bilgiler tarayıcınızdan çıkmaz.</p>
+  </div>
+
+  <div class="layout">
+    <form class="col" id="form" autocomplete="off" onsubmit="return false">
+      <div class="cipler" role="group" aria-label="Hesap türü" style="margin-top:0">
+        <button type="button" class="cip" id="turMevduat" aria-pressed="true">Vadeli mevduat</button>
+        <button type="button" class="cip" id="turKatilma" aria-pressed="false">Katılma hesabı</button>
+      </div>
+
+      <div class="kart">
+        <div class="alan">
+          <label class="alan-basligi" for="tutar">Yatırılacak tutar</label>
+          <div class="girdi"><input id="tutar" inputmode="numeric" value="100.000"><span class="ek son">TL</span></div>
+        </div>
+        <div class="satir2" style="margin-top:16px">
+          <div>
+            <label class="alan-basligi" for="oran" id="oranEtiket">Yıllık faiz</label>
+            <div class="girdi"><span class="ek on">%</span><input id="oran" inputmode="decimal" value="40"></div>
+          </div>
+          <div>
+            <label class="alan-basligi" for="gun">Vade</label>
+            <div class="girdi"><input id="gun" inputmode="numeric" value="32"><span class="ek son">gün</span></div>
+          </div>
+        </div>
+        <div class="referans" id="referans" hidden>
+          <div class="metin">
+            Piyasa ortalaması <strong id="refOran"></strong> yıllık
+            <small id="refTarih"></small>
+            <details><summary>Bu oran nedir?</summary><span id="refAciklama"></span></details>
+          </div>
+          <button type="button" id="refKullan">Kullan</button>
+        </div>
+        <div class="cipler" id="vadeler" role="group" aria-label="Vade önerileri"></div>
+      </div>
+
+      <div class="kart">
+        <label class="alan-basligi" for="baslangic">Başlangıç</label>
+        <div class="girdi"><input id="baslangic" type="date"></div>
+        <div class="alan-basligi" style="margin-top:16px">Stopaj</div>
+        <div class="cipler" role="group" aria-label="Stopaj" style="margin-top:0">
+          <button type="button" class="cip" id="stopajYasal" aria-pressed="true">Yasal oran</button>
+          <button type="button" class="cip" id="stopajElle" aria-pressed="false">Elle gir</button>
+        </div>
+        <div id="stopajBilgi"></div>
+        <div class="girdi" id="stopajGirdi" style="margin-top:12px" hidden><span class="ek on">%</span><input id="stopaj" inputmode="decimal" value="17,5" aria-label="Stopaj oranı"></div>
+      </div>
+    </form>
+
+    <div class="col sticky" aria-live="polite">
+      <div id="sonuclar" class="col"></div>
+      <p class="uyari-notu">Sonuçlar tahmini ve bilgilendirme amaçlıdır; finans kuruluşu teklifi veya bağlayıcı bir taahhüt değildir. Gerçek oranlar, vergiler ve ödeme koşulları kuruma göre değişebilir.</p>
+    </div>
+  </div>
+
+  <div class="kart uygulama" style="margin-top:20px">
+    <h2>Daha fazlası Vadelio uygulamasında</h2>
+    <p>Bu hesaplayıcı uygulamadaki mevduat hesabının aynısıdır. Uygulamada ayrıca:</p>
+    <ul>
+      <li>Gün gün kredi ödeme planı, erken kapama, karşılaştırma</li>
+      <li>Çek vadesine göre finansman ve çek portföyü <span>PRO</span></li>
+      <li>Logolu, markalı PDF ve Excel raporları <span>PRO</span></li>
+    </ul>
+    <div class="magazalar" data-magaza></div>
+  </div>
+
+  <section class="yazi">
+    <h2>Mevduat getirisi nasıl hesaplanır?</h2>
+    <p>Vadeli mevduatta getiri basit faizle, gün sayısına göre işler (yıl 365 gün):</p>
+    <ul>
+      <li><strong>Brüt getiri</strong> = tutar × yıllık oran × gün / 365</li>
+      <li><strong>Stopaj</strong> = brüt getiri × stopaj oranı</li>
+      <li><strong>Net getiri</strong> = brüt getiri − stopaj; vade sonunda anaparaya eklenir.</li>
+    </ul>
+    <p>Her vade sonunda anapara ve net getiri birlikte yenilenirse getiri bileşik büyür; "Her vade yenilenirse" satırı bu yıllık karşılığı gösterir.</p>
+
+    <h2 style="margin-top:28px">Güncel stopaj oranları</h2>
+    <p>TL mevduat ve katılma hesaplarında, hesabın açıldığı ya da yenilendiği tarihte yürürlükte olan oran uygulanır. 31.12.2026'ya kadar: vadesiz ve 6 aya kadar <strong>%17,5</strong>, 1 yıla kadar <strong>%15</strong>, 1 yıldan uzun <strong>%10</strong> (11444 sayılı Cumhurbaşkanı Kararı).</p>
+
+    <h2 style="margin-top:28px">Sık sorulanlar</h2>
+    <details><summary>Bankanın gösterdiği getiriyle neden küçük fark olabilir?</summary><p>Bazı bankalar vade sonunu iş gününe kaydırır ya da getiriyi farklı yuvarlar. Vadelio gün sayısını başlangıç tarihinden sayar ve kuruşa yuvarlar.</p></details>
+    <details><summary>Piyasa ortalaması oran nereden geliyor?</summary><p>TCMB'nin her hafta yayımladığı, bankaların o vade dilimindeki yeni TL mevduata uyguladığı ağırlıklı ortalamadan. TCMB bileşik yıllık oran yayımlar; burada seçtiğiniz vadeye göre bankaların ilan ettiği basit yıllık karşılığı gösterilir.</p></details>
+    <details><summary>Girdiğim bilgiler bir yere gönderiliyor mu?</summary><p>Hayır. Hesap tamamen tarayıcınızda yapılır; tutar ve oranlar hiçbir sunucuya gönderilmez.</p></details>
+
+    <h2 style="margin-top:28px">Diğer hesaplayıcılar</h2>
+    <div class="diger">
+      <a href="/kredi-hesaplama/"><b>Kredi hesaplama</b><span>Aylık taksit, toplam maliyet ve gün gün ödeme planı.</span></a>
+      <a href="/"><b>Vadelio uygulaması</b><span>Çek portföyü, çek vadesine göre finansman ve fazlası.</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Vadelio</span>
+    <span><a href="/privacy/">Gizlilik Politikası</a> · <a href="mailto:mahsunse@gmail.com">İletişim</a></span>
+  </div>
+</footer>
+
+<script src="/hesap/vadelio-hesap.js"></script>
+<script src="/hesap/arayuz.js"></script>
+<script>
+(() => {
+  "use strict";
+  const V = window.Vadelio, A = window.VadelioArayuz;
+  const $ = (id) => document.getElementById(id);
+  const VADELER = [32, 92, 181, 365];
+
+  const durum = { katilma: false, yasalStopaj: true, baslangic: A.bugun() };
+  let referans = null;
+
+  A.tutarAlani($("tutar"), ciz);
+  A.oranAlani($("oran"), ciz);
+  A.tamSayiAlani($("gun"), 4, ciz);
+  A.oranAlani($("stopaj"), ciz);
+
+  $("baslangic").value = A.tarihDegeri(durum.baslangic);
+  $("baslangic").addEventListener("change", () => {
+    const t = A.tarihOku($("baslangic").value);
+    if (t) { durum.baslangic = t; ciz(); }
+  });
+  $("turMevduat").addEventListener("click", () => { durum.katilma = false; ciz(); });
+  $("turKatilma").addEventListener("click", () => { durum.katilma = true; ciz(); });
+  $("stopajYasal").addEventListener("click", () => { durum.yasalStopaj = true; ciz(); });
+  $("stopajElle").addEventListener("click", () => { durum.yasalStopaj = false; ciz(); });
+  $("refKullan").addEventListener("click", () => {
+    const r = V.referansMevduat(referans, parseInt($("gun").value, 10));
+    if (!r) return;
+    $("oran").value = V.oranYaz(Number(r.basit.toFixed(2)));
+    ciz();
+  });
+
+  function hesapla() {
+    const tutar = A.tutarOku($("tutar").value);
+    const oran = A.oranOku($("oran").value);
+    const gun = parseInt($("gun").value, 10);
+    let stopaj;
+    if (durum.yasalStopaj && gun > 0) stopaj = V.yasalStopaj(durum.baslangic, V.gunEkle(durum.baslangic, gun)).oranYuzde;
+    else stopaj = A.oranOku($("stopaj").value) ?? 0;
+    if (!(tutar > 0)) return { hata: "Tutarı girin." };
+    if (oran == null) return { hata: durum.katilma ? "Kâr payı oranını girin." : "Faiz oranını girin." };
+    if (!(gun > 0)) return { hata: "Vadeyi girin." };
+    if (stopaj >= 100) return { hata: "Stopaj oranı 100'den küçük olmalı." };
+    return { sonuc: V.mevduatHesapla({ anapara: tutar, yillikOranYuzde: oran, stopajYuzde: stopaj, baslangic: durum.baslangic, gun }) };
+  }
+
+  function stopajBilgisi(gun) {
+    const kap = $("stopajBilgi");
+    kap.innerHTML = "";
+    $("stopajGirdi").hidden = durum.yasalStopaj;
+    if (!durum.yasalStopaj) return;
+    if (!(gun > 0)) {
+      kap.appendChild(A.el("p", "ipucu", "Vadeyi girince oran belirlenir."));
+      return;
+    }
+    const dilim = V.yasalStopaj(durum.baslangic, V.gunEkle(durum.baslangic, gun));
+    const gecerli = V.yasalStopajGecerli(durum.baslangic);
+    const k = A.el("div", "stopaj-kutu");
+    const ust = A.el("div");
+    ust.appendChild(A.el("span", "buyuk", "%" + V.oranYaz(dilim.oranYuzde)));
+    ust.appendChild(A.el("span", "ipucu", "  " + dilim.vadeAraligi + " vade"));
+    k.appendChild(ust);
+    for (const [aralik, oran] of [["Vadesiz ve 6 aya kadar", 17.5], ["1 yıla kadar", 15], ["1 yıldan uzun", 10]]) {
+      const d = A.el("div", "dilim" + (oran === dilim.oranYuzde ? " secili" : ""));
+      d.appendChild(A.el("span", null, aralik));
+      d.appendChild(A.el("span", null, "%" + V.oranYaz(oran)));
+      k.appendChild(d);
+    }
+    const sinir = V.tarihFormat(V.YASAL_STOPAJ_GECERLILIK);
+    k.appendChild(A.el("p", gecerli ? null : "uyari", gecerli
+      ? V.YASAL_STOPAJ_KAYNAGI + " · " + sinir + " tarihine kadar açılan ya da yenilenen hesaplar için."
+      : "Bu oranlar " + sinir + " tarihine kadar geçerliydi; sonrası için güncel kararı kontrol edin ya da oranı elle girin."));
+    kap.appendChild(k);
+  }
+
+  function ciz() {
+    const gun = parseInt($("gun").value, 10);
+    const getiriAdi = durum.katilma ? "kâr payı" : "faiz";
+    $("turMevduat").setAttribute("aria-pressed", String(!durum.katilma));
+    $("turKatilma").setAttribute("aria-pressed", String(durum.katilma));
+    $("stopajYasal").setAttribute("aria-pressed", String(durum.yasalStopaj));
+    $("stopajElle").setAttribute("aria-pressed", String(!durum.yasalStopaj));
+    $("oranEtiket").textContent = durum.katilma ? "Yıllık kâr payı" : "Yıllık faiz";
+
+    const vadeKap = $("vadeler");
+    vadeKap.innerHTML = "";
+    for (const g of VADELER) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "cip";
+      b.textContent = g + " gün";
+      b.setAttribute("aria-pressed", String(gun === g));
+      b.addEventListener("click", () => { $("gun").value = g; ciz(); });
+      vadeKap.appendChild(b);
+    }
+
+    const r = V.referansMevduat(referans, gun);
+    $("referans").hidden = !r;
+    if (r) {
+      $("refOran").textContent = "%" + V.oranYaz(r.basit);
+      $("refTarih").textContent = "TCMB" + (r.tarih ? " · " + V.tarihFormat(r.tarih) + " haftası" : "");
+      $("refAciklama").textContent =
+        " Bankaların geçen hafta bu vade dilimindeki yeni TL mevduata uyguladığı ağırlıklı ortalama (TCMB). TCMB oranı bileşik yıllık %" +
+        V.oranYaz(r.bilesik) + " olarak yayımlar; burada seçtiğiniz vadeye göre bankaların ilan ettiği basit yıllık karşılığı gösterilir. Katılım bankalarının kâr payı oranları farklı olabilir.";
+    }
+
+    stopajBilgisi(gun);
+
+    const { sonuc: s, hata } = hesapla();
+    const kap = $("sonuclar");
+    kap.innerHTML = "";
+    if (!s) {
+      kap.appendChild(A.el("div", "eksik", hata));
+      return;
+    }
+    const k = A.el("div", "kart sonuc mavi");
+    k.appendChild(A.el("div", "baslik", "Net " + getiriAdi));
+    k.appendChild(A.el("div", "deger", V.paraFormat(s.netGetiri, 2)));
+    const alt = A.el("div", "alt");
+    alt.style.gridTemplateColumns = "repeat(2, minmax(0, 1fr))";
+    for (const [e, d] of [["Vade sonu", V.tarihFormat(s.vadeSonu)], ["Toplam tutar", V.paraFormat(s.vadeSonuTutar)]]) {
+      const h = A.el("div", null, e);
+      h.appendChild(A.el("b", null, d));
+      alt.appendChild(h);
+    }
+    k.appendChild(alt);
+    kap.appendChild(k);
+
+    const ay = A.el("div", "kart");
+    ay.appendChild(A.el("div", "alan-basligi", "Ayrıntı"));
+    ay.appendChild(A.bilgiSatiri("Anapara", V.paraFormat(s.anapara, 2)));
+    ay.appendChild(A.bilgiSatiri("Brüt " + getiriAdi, V.paraFormat(s.brutGetiri, 2)));
+    ay.appendChild(A.bilgiSatiri("Stopaj (%" + V.oranYaz(s.stopajYuzde) + ")", "-" + V.paraFormat(s.stopaj, 2)));
+    ay.appendChild(A.el("hr", "ayrac"));
+    ay.appendChild(A.bilgiSatiri("Vade sonu toplam", V.paraFormat(s.vadeSonuTutar, 2), { vurgu: true }));
+    kap.appendChild(ay);
+
+    const or = A.el("div", "kart");
+    or.appendChild(A.el("div", "alan-basligi", "Oranlar"));
+    or.appendChild(A.bilgiSatiri("Net yıllık getiri", V.yuzdeFormat(s.netYillikOran)));
+    or.appendChild(A.bilgiSatiri("Her vade yenilenirse (yıllık)", V.yuzdeFormat(s.yenilemeliYillikOran)));
+    if (s.gun < 365) or.appendChild(A.bilgiSatiri("Bir yıl yenilenirse tutar", V.paraFormat(s.yenilemeliTutar(Math.floor(365 / s.gun)))));
+    kap.appendChild(or);
+
+    kap.appendChild(A.el("p", "ipucu", durum.katilma
+      ? "Katılma hesabında kâr payı oranı önceden kesin değildir; dönem sonunda bankanın elde ettiği kâra göre belirlenir. Girilen oran tahmindir. Stopaj, vadeli mevduattaki oranlarla aynıdır."
+      : "Stopaj, hesabın açıldığı ya da yenilendiği tarihte yürürlükte olan orandan kesilir."));
+  }
+
+  A.referansYukle((r) => { referans = r; ciz(); });
+  ciz();
+})();
+</script>
+</body>
+</html>
