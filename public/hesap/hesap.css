@@ -159,6 +159,23 @@ table.plan tr.toplam td { font-weight: 800; border-bottom: 0; color: var(--ink);
 .diger a b { display: block; }
 .diger a span { color: var(--muted); font-size: 14px; }
 
+/* Alt bölüm: diğer uygulamalar ve sosyal hesaplar */
+.more { border-top: 1px solid var(--line); padding: 36px 0 8px; }
+.more .wrap { display: grid; grid-template-columns: 1.4fr 1fr; gap: 28px; }
+@media (max-width: 760px) { .more .wrap { grid-template-columns: 1fr; } }
+.more h4 { margin: 0 0 12px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.apps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.app { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; text-decoration: none; }
+.app:hover { border-color: var(--green); }
+.app img { width: 44px; height: 44px; border-radius: 11px; flex: 0 0 auto; }
+.app b { display: block; font-size: 16px; }
+.app span { display: block; font-size: 13px; color: var(--muted); line-height: 1.35; }
+.social { display: flex; flex-wrap: wrap; gap: 10px; }
+.social a { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 9px 16px; text-decoration: none; font-weight: 700; font-size: 15px; }
+.social a:hover { border-color: var(--green); }
+.social svg { width: 20px; height: 20px; fill: currentColor; }
+.more { margin-top: 36px; }
+.more + footer { margin-top: 0; }
 footer { border-top: 1px solid var(--line); margin-top: 36px; padding: 24px 0 36px; font-size: 14px; color: var(--muted); }
 footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 
