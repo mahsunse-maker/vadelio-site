@@ -6,7 +6,7 @@
   // Mağaza bağlantıları: uygulama yayına girince yalnızca burayı doldurun.
   const MAGAZA = {
     play: null, // "https://play.google.com/store/apps/details?id=com.mahsunse.kredifinansmanhesaplama"
-    appStore: null, // "https://apps.apple.com/tr/app/vadelio/id..."
+    appStore: "https://apps.apple.com/tr/app/vadelio-kredi-%C3%A7ek-hesaplama/id6828172101",
   };
 
   const SIMGE = {
