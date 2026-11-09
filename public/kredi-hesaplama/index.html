@@ -32,10 +32,10 @@
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "Kredi taksiti nasıl hesaplanır?", "acceptedAnswer": { "@type": "Answer", "text": "Kâr payı (faiz) kalan anaparaya, iki ödeme arasındaki gün sayısı × aylık oran / 30 olarak işler. Taksit, vade sonunda borcu tam kapatan en küçük eşit tutardır; kuruşa aşağı yuvarlanır, kalan kuruş farkı son taksite eklenir." } },
+        { "@type": "Question", "name": "Kredi taksiti nasıl hesaplanır?", "acceptedAnswer": { "@type": "Answer", "text": "Bireysel, konut ve taşıt kredisinde her ay 30 gün sayılır; ticari kredide kâr payı kalan anaparaya gerçek gün sayısı × aylık oran / 30 olarak işler. Taksit, vade sonunda borcu tam kapatan en küçük eşit tutardır; kuruşa aşağı yuvarlanır, kalan kuruş farkı son taksite eklenir." } },
         { "@type": "Question", "name": "KKDF ve BSMV hangi kredilerde alınır?", "acceptedAnswer": { "@type": "Answer", "text": "Bireysel (ihtiyaç) ve taşıt kredilerinde kâr payı üzerinden %15 KKDF ve %15 BSMV, ticari kredilerde %5 BSMV alınır. Konut kredisi bu vergilerden muaftır." } },
         { "@type": "Question", "name": "Ödemesiz dönemde ne olur?", "acceptedAnswer": { "@type": "Answer", "text": "Ödemesiz dönemde işleyen kâr payı ilk taksitlerden öncelikle tahsil edilir; bu birikmiş kâr payına ayrıca kâr işlemez." } },
-        { "@type": "Question", "name": "Taksit tarihi tatile denk gelirse ne olur?", "acceptedAnswer": { "@type": "Answer", "text": "Hafta sonu ve resmi tatillere (dini bayramlar dahil) denk gelen taksit sonraki iş gününe kayar; aradaki gün sayısı arttığı için o dönemin kâr payı da artar." } }
+        { "@type": "Question", "name": "Taksit tarihi tatile denk gelirse ne olur?", "acceptedAnswer": { "@type": "Answer", "text": "Hafta sonu ve resmi tatillere (dini bayramlar dahil) denk gelen taksit sonraki iş gününe kayar. Bireysel, konut ve taşıt kredisinde tutar değişmez; ticari kredide aradaki gün sayısı arttığı için o dönemin kâr payı da artar." } }
       ]
     }
   ]
@@ -139,13 +139,14 @@
     <h2>Kredi taksiti nasıl hesaplanır?</h2>
     <p>Vadelio, katılım bankalarının eşit taksitli geri ödeme planını birebir uygular:</p>
     <ol>
-      <li><strong>Gün sayısıyla kâr payı.</strong> Her dönemin kâr payı, kalan anaparaya gün sayısı × aylık oran / 30 olarak işler. 31 gün süren bir dönem, 28 gün sürenden daha fazla kâr payı doğurur.</li>
-      <li><strong>İş gününe kayma.</strong> Hafta sonu ve resmi tatillere (Ramazan ve Kurban Bayramı dahil) denk gelen taksit sonraki iş gününe kayar.</li>
+      <li><strong>Bireysel, konut, taşıt: klasik eşit taksit.</strong> Her ay 30 gün sayılır, kâr payı kalan anaparaya aylık oranla işler ve taksitler eşit çıkar.</li>
+      <li><strong>Ticari: gün sayısıyla kâr payı.</strong> Her dönemin kâr payı, kalan anaparaya gerçek gün sayısı × aylık oran / 30 olarak işler. 31 gün süren bir dönem, 28 gün sürenden daha fazla kâr payı doğurur.</li>
+      <li><strong>İş gününe kayma.</strong> Hafta sonu ve resmi tatillere (Ramazan ve Kurban Bayramı dahil) denk gelen taksit sonraki iş gününe kayar; tutarı yalnızca ticari kredide değişir.</li>
       <li><strong>Ödemesiz dönem.</strong> Bu sürede işleyen kâr payı ilk taksitlerden öncelikle tahsil edilir; birikmiş kâr payına ayrıca kâr işlemez.</li>
       <li><strong>Vergiler.</strong> Bireysel ve taşıt kredisinde kâr payı üzerinden %15 KKDF ve %15 BSMV, ticari kredide %5 BSMV eklenir; konut kredisi muaftır.</li>
       <li><strong>Kuruş yuvarlaması.</strong> Taksit kuruşa aşağı yuvarlanır, artan kuruş farkı son taksite eklenir.</li>
     </ol>
-    <p>Bu yöntemle çıkan plan, bir katılım bankasının gerçek ödeme planıyla kuruşu kuruşuna karşılaştırılarak doğrulanmıştır.</p>
+    <p>Ticari kredi planı, bir katılım bankasının gerçek ödeme planıyla kuruşu kuruşuna karşılaştırılarak doğrulanmıştır.</p>
 
     <h2 style="margin-top:28px">Sık sorulanlar</h2>
     <details><summary>"Yıllık maliyet oranı" neyi gösterir?</summary><p>Vergiler ve gerçek ödeme tarihleri dahil, taksitlerin bugünkü değerini kredi tutarına eşitleyen oranın yıllık bileşik karşılığıdır. Farklı tekliflerin toplam maliyetini karşılaştırmak için kullanılır.</p></details>
@@ -414,7 +415,9 @@
     const notlar = [];
     if (p.satirlar[0].kalanKar > 0 || p.odemesizGun > 0)
       notlar.push("Ödemesiz dönemde işleyen kâr payı (vergi dahil) ilk taksitlerden öncelikle tahsil edilir.");
-    notlar.push("Kâr payı gün sayısına göre işler; hafta sonu ve resmi tatile denk gelen taksitler sonraki iş gününe kayar.");
+    notlar.push(V.gunSayiliTur(p.tur)
+      ? "Kâr payı gün sayısına göre işler; hafta sonu ve resmi tatile denk gelen taksitler sonraki iş gününe kayar."
+      : "Her ay 30 gün sayılır, taksitler eşittir. Hafta sonu ve resmi tatile denk gelen taksit sonraki iş günü ödenir, tutarı değişmez.");
     if (p.vergi > 0)
       notlar.push("Taksitlere toplam " + V.paraFormat(p.vergi, 2) + " yasal vergi (KKDF %" + Math.round(p.kkdf * 100) + " / BSMV %" + Math.round(p.bsmv * 100) + ") dahildir.");
     const ul = $("notlar");

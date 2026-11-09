@@ -102,7 +102,22 @@
   }
 
   /**
-   * Katılım bankalarının eşit taksitli geri ödeme planı (KrediPlani.hesapla).
+   * Ticari kredide kâr payı gerçek gün sayısıyla işler. Bireysel, konut ve
+   * taşıt kredisinde klasik eşit taksit geçerlidir: her ay 30 gün sayılır.
+   */
+  function gunSayiliTur(tur) {
+    return tur === "Ticari Kredi";
+  }
+
+  /** Klasik yöntemde ilk dönem: her tam ay 30 gün, artan günler olduğu gibi. */
+  function ilkDonemGunu(fin, ilk) {
+    let ay = ayFarki(fin, ilk);
+    if (ayEkle(fin, ay + 1).getTime() === ilk.getTime()) ay++;
+    return 30 * ay + gunFarki(ayEkle(fin, ay), ilk);
+  }
+
+  /**
+   * Eşit taksitli geri ödeme planı (KrediPlani.hesapla).
    * finansmanTarihi verilmezse her ay 30 gün sayılır.
    */
   function krediHesapla({ tur, tutar, oranYuzde, vade, odemesiz = 0, finansmanTarihi = null, ilkTaksitTarihi = null }) {
@@ -129,7 +144,7 @@
       for (let i = 0; i < vade; i++) {
         const t = sonrakiIsGunu(ayEkle(ilk, i, ilk.getUTCDate()));
         tarihler.push(t);
-        gunler.push(gunFarki(onceki, t));
+        gunler.push(gunSayiliTur(tur) ? gunFarki(onceki, t) : i === 0 ? ilkDonemGunu(fin, ilk) : 30);
         onceki = t;
       }
     }
@@ -330,7 +345,7 @@
 
   const V = {
     kurus, utc, gunTarihi, gunEkle, gunFarki, ayEkle, ayFarki, isGunuMu, sonrakiIsGunu,
-    MAKSIMUM_VADE, KREDI_TURLERI, vergiOranlari, krediHesapla,
+    MAKSIMUM_VADE, KREDI_TURLERI, vergiOranlari, gunSayiliTur, krediHesapla,
     mevduatHesapla, yasalStopaj, yasalStopajGecerli, YASAL_STOPAJ_KAYNAGI, YASAL_STOPAJ_GECERLILIK,
     REFERANS_ADRESI, referansCoz, referansKredi, referansMevduat,
     binlikAyir, paraFormat, yuzdeFormat, oranYaz, tarihFormat,

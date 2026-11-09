@@ -62,13 +62,23 @@ test("katılım bankası planıyla kuruşu kuruşuna aynıdır", () => {
 });
 
 test("ilk taksit tarihi elle seçilebilir", () => {
-  const p = hesapla({ vade: 6, finansman: V.utc(2026, 10, 28), ilkTaksit: V.utc(2026, 12, 15) });
+  const p = hesapla({ tur: "Ticari Kredi", vade: 6, finansman: V.utc(2026, 10, 28), ilkTaksit: V.utc(2026, 12, 15) });
   assert.equal(V.tarihFormat(p.ilkTaksitTarihi), "15.12.2026");
   assert.equal(p.satirlar[0].gun, 48);
   assert.equal(p.odemesizGun, 17);
-  const q = hesapla({ vade: 6, finansman: V.utc(2026, 10, 28), ilkTaksit: V.utc(2026, 11, 20) });
+  const q = hesapla({ tur: "Ticari Kredi", vade: 6, finansman: V.utc(2026, 10, 28), ilkTaksit: V.utc(2026, 11, 20) });
   assert.equal(q.odemesizGun, 0);
   assert.equal(q.satirlar[0].gun, 23);
+});
+
+test("bireysel, konut, taşıt klasik eşit taksittir", () => {
+  const fin = V.utc(2026, 11, 9);
+  assert.equal(hesapla({ tutar: 2000000, oran: 2.9, vade: 120, finansman: fin }).taksit, hesapla({ tutar: 2000000, oran: 2.9, vade: 120 }).taksit);
+  yakin(hesapla({ tutar: 2000000, oran: 2.9, vade: 120, finansman: fin }).taksit, 59940.32, 0.02);
+  assert.equal(hesapla({ tur: "Bireysel Kredi", oran: 3.5, finansman: fin }).taksit, 10998.0);
+  yakin(hesapla({ tur: "Taşıt Kredisi", tutar: 500000, oran: 3, vade: 36, finansman: fin }).taksit, 26078.42, 0.02);
+  assert.equal(hesapla({ vade: 6, finansman: V.utc(2026, 10, 28), ilkTaksit: V.utc(2026, 12, 15) }).satirlar[0].gun, 47);
+  assert.equal(hesapla({ vade: 12, finansman: V.utc(2027, 1, 31) }).satirlar[0].gun, 30);
 });
 
 test("yıllık oranlar", () => {
