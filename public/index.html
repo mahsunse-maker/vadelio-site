@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-itunes-app" content="app-id=6828172101">
 <title>Vadelio – Kredi, çek ve mevduat hesaplama</title>
-<meta name="description" content="Bankaların yöntemiyle kredi taksiti ve gün gün ödeme planı, çek vadesine göre finansman, yasal stopajla mevduat getirisi. Hesap yok, takip yok.">
+<meta name="description" content="Bankaların yöntemiyle kredi taksiti ve gün gün ödeme planı; çekleri kamerayla tara, alınan ve verilen çekleri izle, ödeme gününden önce hatırlatma al. Mevduat getirisi ve yasal stopaj. Hesap yok, takip yok.">
 <meta property="og:title" content="Vadelio – Kredi, çek ve mevduat hesaplama">
-<meta property="og:description" content="Bankaların yöntemiyle hesapla: kredi taksiti, çek vadesine göre finansman, mevduat getirisi.">
+<meta property="og:description" content="Kredi taksiti ve ödeme planı, kamerayla çek tarama, alınan ve verilen çek takibi, nakit akışı ve mevduat getirisi.">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://vadelio.com.tr/">
 <meta property="og:url" content="https://vadelio.com.tr/">
@@ -157,6 +157,42 @@
   .social a:hover { border-color: var(--green); }
   .social svg { width: 20px; height: 20px; fill: currentColor; }
 
+  /* Çek bölümü */
+  .cek-band { background: linear-gradient(160deg, #13201B, #0A1410); color: #fff; }
+  .cek-band h2 { color: #fff; }
+  .cek-band h2 em { font-style: normal; color: #E3C25B; }
+  .cek-band .sub { color: #B9C8C1; }
+  .cek-ust { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 40px; }
+  @media (max-width: 860px) { .cek-ust { grid-template-columns: 1fr; } }
+  .cek-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .cek-liste li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; }
+  .cek-liste .i { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(227, 194, 91, .14); font-size: 20px; }
+  .cek-liste b { display: block; font-size: 17px; }
+  .cek-liste span { color: #B9C8C1; font-size: 15px; }
+  .ikili { display: flex; justify-content: center; align-items: flex-start; gap: 18px; }
+  .ikili .phone { width: 230px; margin: 0; border-radius: 38px; padding: 9px; }
+  .ikili .phone .screen { border-radius: 30px; }
+  .ikili .phone:last-child { margin-top: 48px; }
+  @media (max-width: 560px) { .ikili .phone { width: 46%; max-width: none; } }
+  .phone .screen img.sabit { opacity: 1; }
+  .cek-kart { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .cek-kart div { background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .1); border-radius: 18px; padding: 20px; }
+  .cek-kart h3 { margin: 0 0 6px; font-size: 17px; color: #fff; }
+  .cek-kart p { margin: 0; font-size: 15px; color: #B9C8C1; }
+  .yon { display: inline-block; font-size: 12px; font-weight: 800; border-radius: 999px; padding: 2px 9px; margin-bottom: 10px; }
+  .yon.al { background: rgba(74, 222, 128, .15); color: #86EFAC; }
+  .yon.ver { background: rgba(214, 120, 80, .2); color: #F4A57F; }
+  .yon.pro { background: linear-gradient(90deg, #F5DE8A, #C9A227); color: #3A2E05; }
+  .gizli-not { margin-top: 22px; font-size: 14px; color: #9FB2A9; }
+
+  /* Tablet vitrini */
+  .tablet-band { display: grid; grid-template-columns: 1fr 1.25fr; gap: 36px; align-items: center; }
+  @media (max-width: 860px) { .tablet-band { grid-template-columns: 1fr; } }
+  .tablet { background: #0A0F0D; border-radius: 30px; padding: 12px; box-shadow: 0 24px 60px rgba(0, 40, 25, .22); }
+  .tablet img { display: block; width: 100%; height: auto; border-radius: 20px; }
+  .cihazlar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .cihazlar span { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-weight: 700; font-size: 14px; }
+
   footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 14px; color: var(--muted); }
   footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 </style>
@@ -169,9 +205,11 @@
       <a href="/kredi-hesaplama/">Kredi hesapla</a>
       <a href="/mevduat-hesaplama/">Mevduat hesapla</a>
       <a href="#araclar">Araçlar</a>
+      <a href="#cekler">Çekler</a>
       <a href="#ekranlar">Ekranlar</a>
       <a href="#fiyat">Fiyat</a>
       <a href="#sss">SSS</a>
+      <a href="/destek/">Destek</a>
     </nav>
   </div>
 </header>
@@ -182,7 +220,7 @@
       <div>
         <span class="eyebrow">Kredi · Çek · Mevduat</span>
         <h1>Vadeni bil, <em>planını gör.</em></h1>
-        <p class="lead">Vadelio, kredi taksitini bankaların hesapladığı yöntemle gün gün çıkarır; çeklerinin vadesine göre finansmanı ve mevduatının net getirisini dakikalar içinde gösterir.</p>
+        <p class="lead">Vadelio, kredi taksitini bankaların hesapladığı yöntemle gün gün çıkarır. Çeklerini kamerayla tara, alınan ve verilen çekleri tek yerde izle, ödeme gününden önce haberin olsun.</p>
         <div class="cta">
           <a class="store" href="https://play.google.com/store/apps/details?id=com.mahsunse.kredifinansmanhesaplama" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 1.8 13.8 12 3.6 22.2c-.4-.2-.6-.6-.6-1.1V2.9c0-.5.2-.9.6-1.1Zm11.3 11.3 2.6 2.6-11.9 6.8 9.3-9.4Zm3.9-3.9 2.7 1.6c.8.5.8 1.7 0 2.2l-2.7 1.6-2.9-2.6 2.9-2.8ZM5.6 1.5l11.9 6.8-2.6 2.6-9.3-9.4Z"/></svg>
@@ -198,10 +236,11 @@
       </div>
       <div class="phone" aria-hidden="true">
         <div class="screen">
-          <img class="on" src="/shots/01-ana-sayfa.jpg" alt="">
-          <img src="/shots/02-kredi-sonucu.jpg" alt="">
-          <img src="/shots/05-cek-portfoyu.jpg" alt="">
-          <img src="/shots/03-odeme-plani.jpg" alt="">
+          <img class="on" src="/shots/ana-sayfa.jpg" alt="">
+          <img src="/shots/okunan-cekler.jpg" alt="">
+          <img src="/shots/cek-alinan.jpg" alt="">
+          <img src="/shots/kredi.jpg" alt="">
+          <img src="/shots/nakit-akisi.jpg" alt="">
         </div>
       </div>
     </div>
@@ -213,10 +252,50 @@
       <p class="sub">Uygulamayı açtığında seni bu dört kart karşılar. Her biri, bankada masaya oturmadan önce bilmen gerekenleri gösterir.</p>
       <div class="tools">
         <a class="tool t-kredi" href="/kredi-hesaplama/"><span class="ico">🧮</span><span class="tag">Banka yöntemiyle</span><h3>Kredi hesapla</h3><p>Aylık taksit, toplam maliyet ve gün gün ödeme planı. Ödemesiz dönem, KKDF ve BSMV dahil; tatil günleri sonraki iş gününe kayar.</p><span class="web">Web'de hesapla →</span></a>
-        <div class="tool t-cek"><span class="ico">🧾</span><span class="tag">PRO · Ayrıcalıklı</span><h3>Çek portföyü</h3><p>Çek listeni Excel'den yükle, vadesi yaklaşanları renkli gör, bankaya ve keşideciye göre tasnif et; çek vadesine göre finansman hesapla.</p></div>
+        <a class="tool t-cek" href="#cekler"><span class="ico">🧾</span><span class="tag">Yeni · Kamerayla tarama</span><h3>Çek portföyü</h3><p>Alınan ve verilen çekler, ciro ve bankaya verilen çekler, ödeme hatırlatması. Nakit akışı ve çek vadesine göre finansman Pro'da.</p><span class="web">Çek özellikleri →</span></a>
         <a class="tool t-mevduat" href="/mevduat-hesaplama/"><span class="ico">🏦</span><span class="tag">Getiri hesabı</span><h3>Mevduat hesapla</h3><p>Vadeli mevduat ya da katılma hesabının net getirisi. Yasal stopaj vadeye göre kendiliğinden uygulanır.</p><span class="web">Web'de hesapla →</span></a>
         <div class="tool t-diger"><span class="ico">🧰</span><span class="tag">3 araç</span><h3>Diğer hesaplamalar</h3><p>Ne kadar kredi alabilirim, erken kapama ve ara ödeme, farklı vade ve oranları yan yana karşılaştırma.</p></div>
       </div>
+    </div>
+  </section>
+
+  <section id="cekler" class="cek-band">
+    <div class="wrap">
+      <div class="cek-ust">
+        <div>
+          <h2>Çeklerin <em>tek yerde</em>, cebinde</h2>
+          <p class="sub">Aldığın çeki kameraya tut, bilgiler kendiliğinden dolsun. Verdiğin çeklerin ödeme günü yaklaşınca telefonun haber versin.</p>
+          <ul class="cek-liste">
+            <li><span class="i">📷</span><div><b>Kamerayla tara</b><span>Tutar, vade, banka, şube ve seri no okunur. Yan yana dizdiğin çekler tek seferde.</span></div></li>
+            <li><span class="i">✅</span><div><b>Teslim alırken kontrol</b><span>Keşide tarihi yazılmış mı, tutar rakamla ve yazıyla tutuyor mu, karekod var mı, bankaya en geç ne zaman ibraz edilmeli?</span></div></li>
+            <li><span class="i">🔔</span><div><b>Ödeme hatırlatması</b><span>Verilen çekin ödeme gününden 7 gün önce ve ödeme günü bildirim. Bildirimde yalnız adet ve toplam görünür.</span></div></li>
+          </ul>
+        </div>
+        <div class="ikili" aria-hidden="true">
+          <div class="phone"><div class="screen"><img class="sabit" src="/shots/okunan-cekler.jpg" alt="" loading="lazy"></div></div>
+          <div class="phone"><div class="screen"><img class="sabit" src="/shots/cek-kontrolu.jpg" alt="" loading="lazy"></div></div>
+        </div>
+      </div>
+      <div class="cek-kart">
+        <div><span class="yon al">Alınan</span><h3>Müşteri çekleri</h3><p>Vadesi geçen, yaklaşan ve ileri vadeli çekler renkli. Tahsil edildi, ciro edildi, karşılıksız olarak işaretle.</p></div>
+        <div><span class="yon al">Alınan</span><h3>Bankaya verilen çek</h3><p>Tahsile ya da teminata verdiğin çeki ve bankasını kaydet; "Portföyde / Bankada" ayrı görünsün.</p></div>
+        <div><span class="yon ver">Verilen</span><h3>Kendi çeklerin</h3><p>Lehdarı, vadesi ve tutarıyla verdiğin çekler; ödendi mi, bekliyor mu bir bakışta.</p></div>
+        <div><span class="yon pro">PRO</span><h3>Haftalık nakit akışı</h3><p>Alınan çek girişleri, verilen çek çıkışları ve hafta hafta bakiye. Bakiye eksiye düşecekse önceden gör.</p></div>
+        <div><span class="yon pro">PRO</span><h3>Çek vadesine göre finansman</h3><p>Portföydeki çeklerle ne kadar kullanabileceğini ve taksitlerini hesapla; açığı alınan çeklerle finanse et.</p></div>
+        <div><span class="yon pro">PRO</span><h3>Tasnif ve rapor</h3><p>Bankaya, keşideciye, vade ayına ve bulunduğu yere göre; PDF ya da Excel olarak paylaş.</p></div>
+      </div>
+      <p class="gizli-not">🔒 Okuma telefonunda yapılır: fotoğraf saklanmaz, hiçbir sunucuya gönderilmez. Çek kontrolü bir ön kontroldür, hukuki görüş değildir.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap tablet-band">
+      <div>
+        <h2>Telefonda da, tablette de</h2>
+        <p class="sub" style="margin-bottom:0">Geniş ekranda girdiler solda, sonuçlar sağda. Nakit akışını ve çek listesini bir arada gör.</p>
+        <div class="cihazlar"><span>iPhone</span><span>iPad</span><span>Android telefon</span><span>Tablet ve katlanabilir</span></div>
+      </div>
+      <div class="tablet"><img src="/shots/ipad-nakit-akisi.jpg" width="1200" height="872" loading="lazy" alt="iPad'de çek portföyü nakit akışı"></div>
     </div>
   </section>
 
@@ -225,7 +304,7 @@
       <div class="proof">
         <div>
           <h2>Bankanın planıyla kuruşu kuruşuna</h2>
-          <p>Vadelio bireysel, konut ve taşıt kredisinde klasik eşit taksiti, ticari kredide gün sayısıyla işleyen kâr payını kullanır; ödemesiz dönemin kâr payını ilk taksitlerden tahsil eder ve taksiti bankalar gibi kuruşa yuvarlar.</p>
+          <p>Vadelio ihtiyaç, konut ve taşıt kredisinde klasik eşit taksiti, ticari kredide gün sayısıyla işleyen kâr payını kullanır; ödemesiz dönemin kâr payını ilk taksitlerden tahsil eder ve taksiti bankalar gibi kuruşa yuvarlar.</p>
           <p>Sonuç: bankadan gelen ödeme planıyla aynı mantıkta, satır satır karşılaştırılabilir bir plan.</p>
         </div>
         <table aria-label="Vadelio'nin hesaba kattıkları">
@@ -260,14 +339,20 @@
   <section id="ekranlar">
     <div class="wrap">
       <h2>Uygulamadan görüntüler</h2>
-      <p class="sub">Açık ve koyu temada, Android ve iPhone'da.</p>
+      <p class="sub">Açık ve koyu temada; iPhone, iPad ve Android'de.</p>
       <div class="shots">
-        <figure><img src="/shots/01-ana-sayfa.jpg" width="540" height="1173" loading="lazy" alt="Vadelio ana sayfa"><figcaption>Dört araç, tek ekran</figcaption></figure>
-        <figure><img src="/shots/02-kredi-sonucu.jpg" width="540" height="1173" loading="lazy" alt="Kredi hesaplama sonucu"><figcaption>Taksit ve maliyet</figcaption></figure>
-        <figure><img src="/shots/03-odeme-plani.jpg" width="540" height="1173" loading="lazy" alt="Ödeme planı"><figcaption>Gün gün ödeme planı</figcaption></figure>
-        <figure><img src="/shots/05-cek-portfoyu.jpg" width="540" height="1173" loading="lazy" alt="Çek portföyü"><figcaption>Çek portföyü</figcaption></figure>
-        <figure><img src="/shots/06-cek-finansmani.jpg" width="540" height="1173" loading="lazy" alt="Çek vadesine göre finansman"><figcaption>Çek vadesine göre finansman</figcaption></figure>
-        <figure><img src="/shots/04-karsilastirma.jpg" width="540" height="1173" loading="lazy" alt="Senaryo karşılaştırma"><figcaption>Senaryo karşılaştırma</figcaption></figure>
+        <figure><img src="/shots/ana-sayfa.jpg" width="540" height="1173" loading="lazy" alt="Vadelio ana sayfa"><figcaption>Dört araç, tek ekran</figcaption></figure>
+        <figure><img src="/shots/kredi.jpg" width="540" height="1173" loading="lazy" alt="Kredi hesaplama"><figcaption>Taksit ve maliyet</figcaption></figure>
+        <figure><img src="/shots/odeme-plani.jpg" width="540" height="1173" loading="lazy" alt="Ödeme planı"><figcaption>Gün gün ödeme planı</figcaption></figure>
+        <figure><img src="/shots/okunan-cekler.jpg" width="540" height="1173" loading="lazy" alt="Kamerayla okunan çekler"><figcaption>Kamerayla okunan çekler</figcaption></figure>
+        <figure><img src="/shots/cek-kontrolu.jpg" width="540" height="1173" loading="lazy" alt="Çek kontrolü"><figcaption>Teslim alırken kontrol</figcaption></figure>
+        <figure><img src="/shots/cek-alinan.jpg" width="540" height="1173" loading="lazy" alt="Alınan çekler"><figcaption>Alınan çekler</figcaption></figure>
+        <figure><img src="/shots/cek-verilen.jpg" width="540" height="1173" loading="lazy" alt="Verilen çekler"><figcaption>Verilen çekler ve hatırlatma</figcaption></figure>
+        <figure><img src="/shots/nakit-akisi.jpg" width="540" height="1173" loading="lazy" alt="Haftalık nakit akışı"><figcaption>Haftalık nakit akışı</figcaption></figure>
+        <figure><img src="/shots/cek-finansman.jpg" width="540" height="1173" loading="lazy" alt="Çek vadesine göre finansman"><figcaption>Çek vadesine göre finansman</figcaption></figure>
+        <figure><img src="/shots/mevduat.jpg" width="540" height="1173" loading="lazy" alt="Mevduat getirisi"><figcaption>Mevduat getirisi</figcaption></figure>
+        <figure><img src="/shots/karsilastirma.jpg" width="540" height="1173" loading="lazy" alt="Senaryo karşılaştırma"><figcaption>Senaryo karşılaştırma</figcaption></figure>
+        <figure><img src="/shots/koyu-ana-sayfa.jpg" width="540" height="1173" loading="lazy" alt="Koyu tema"><figcaption>Koyu tema</figcaption></figure>
       </div>
     </div>
   </section>
@@ -278,7 +363,7 @@
       <p class="sub">Üç adım; hesap anında güncellenir.</p>
       <div class="steps">
         <div class="step"><h3>Aracı seç</h3><p>Kredi, çek portföyü, mevduat ya da diğer hesaplamalar.</p></div>
-        <div class="step"><h3>Bilgileri gir</h3><p>Tutar, oran ve vade. Oranı bilmiyorsan piyasa ortalamasını kullan; çeklerini Excel'den yükle.</p></div>
+        <div class="step"><h3>Bilgileri gir</h3><p>Tutar, oran ve vade. Oranı bilmiyorsan piyasa ortalamasını kullan; çeklerini kamerayla tara ya da Excel'den yükle.</p></div>
         <div class="step"><h3>Planı gör, paylaş</h3><p>Taksitler, tarihler ve toplam maliyet hazır. PDF ya da Excel olarak gönder.</p></div>
       </div>
     </div>
@@ -300,10 +385,10 @@
   <section id="fiyat">
     <div class="wrap">
       <h2>Sade fiyatlandırma</h2>
-      <p class="sub">Kredi ve mevduat hesapları ücretsiz. Çekle çalışanlar ve markalı rapor isteyenler için Vadelio Pro.</p>
+      <p class="sub">Kredi, mevduat ve çek takibi ücretsiz. Nakit akışı, finansman ve rapor isteyenler için Vadelio Pro.</p>
       <div class="price-grid">
-        <div class="plan"><h3>Ücretsiz</h3><div class="big">Her zaman</div><ul><li>Kredi hesaplama ve ödeme planı</li><li>Mevduat getirisi ve yasal stopaj</li><li>Ne kadar kredi alabilirim, erken kapama, karşılaştırma</li><li>Çek ekleme ve renkli çek listesi</li></ul></div>
-        <div class="plan pro"><h3>Vadelio Pro</h3><div class="big">7 gün ücretsiz</div><ul><li>Çek vadesine göre finansman</li><li>Banka, keşideci ve vade ayına göre tasnif</li><li>PDF ve Excel çek raporu</li><li>Logolu, markalı PDF</li><li>Aylık ya da yıllık; ödeme Google Play veya App Store üzerinden</li></ul></div>
+        <div class="plan"><h3>Ücretsiz</h3><div class="big">Her zaman</div><ul><li>Kredi hesaplama ve ödeme planı</li><li>Mevduat getirisi ve yasal stopaj</li><li>Ne kadar kredi alabilirim, erken kapama, karşılaştırma</li><li>Alınan ve verilen çek listesi, ciro ve bankaya verme</li><li>Kamerayla tek çek tarama ve çek kontrolü</li><li>Ödeme ve vade hatırlatması</li></ul></div>
+        <div class="plan pro"><h3>Vadelio Pro</h3><div class="big">7 gün ücretsiz</div><ul><li>Haftalık nakit akışı</li><li>Çek vadesine göre finansman</li><li>Yan yana dizilen çekleri toplu tarama</li><li>Banka, keşideci, vade ayı ve yere göre tasnif</li><li>PDF ve Excel çek raporu, logolu markalı PDF</li><li>Aylık ya da yıllık; ödeme Google Play veya App Store üzerinden</li></ul></div>
       </div>
     </div>
   </section>
@@ -315,6 +400,9 @@
       <details><summary>Katılım bankalarına uygun mu?</summary><p>Evet. Uygulama "faiz" yerine "kâr payı" dilini kullanır; ödemesiz dönem ve vergi hesabı katılım bankalarının planlarıyla aynı şekilde yapılır. Mevduatta katılma hesabı seçeneği de vardır.</p></details>
       <details><summary>Piyasa ortalaması oranlar nereden geliyor?</summary><p>Türkiye Cumhuriyet Merkez Bankası'nın her hafta yayımladığı, bankaların yeni kredilere ve mevduata uyguladığı ağırlıklı ortalama oranlardan. Size özel teklif farklı olabilir.</p></details>
       <details><summary>Çeklerim ve bilgilerim nerede saklanıyor?</summary><p>Yalnızca telefonunda. Yüklediğin Excel dosyaları cihazda okunur, hiçbir sunucuya gönderilmez. Hesap açman gerekmez.</p></details>
+      <details><summary>Kamerayla çek tararken fotoğraf bir yere gidiyor mu?</summary><p>Hayır. Okuma telefonun kendi yazı ve karekod tanımasıyla yapılır, internet kullanılmaz. Fotoğraf saklanmaz; yalnızca senin kontrol edip kaydettiğin çek bilgileri listeye eklenir.</p></details>
+      <details><summary>Çek kontrolü çekin geçerli olduğunu gösterir mi?</summary><p>Hayır, bir ön kontroldür. Tarihin yazılıp yazılmadığına, tutarın rakamla ve yazıyla uyuşmasına, karekoda ve ibraz süresine bakar; imzanın ya da çekin gerçekliğini söyleyemez. Karşılıksız çek riskine karşı Findeks karekodlu çek raporuna bak.</p></details>
+      <details><summary>Hatırlatmalar nasıl çalışıyor?</summary><p>Açarsan telefon, verilen çekin ödeme gününden 7 gün önce ve ödeme günü sabah 09:00'da bildirim gösterir; alınan çeklerin vade günü ve ibraz süresi için de hatırlatır. Bildirimler telefonun kendi zamanlayıcısıyla kurulur, sunucu kullanılmaz.</p></details>
       <details><summary>Vadelio Pro'yu nasıl iptal ederim?</summary><p>Abonelik Google Play ya da App Store hesabından yönetilir; istediğin zaman oradan iptal edebilirsin. Deneme süresi bitmeden iptal edersen ücret alınmaz.</p></details>
     </div>
   </section>
@@ -345,7 +433,7 @@
 <footer>
   <div class="wrap">
     <span>© 2026 Vadelio</span>
-    <span><a href="/privacy/">Gizlilik Politikası</a> · <a href="mailto:mahsunse@gmail.com">İletişim</a></span>
+    <span><a href="/destek/">Destek</a> · <a href="/privacy/">Gizlilik Politikası</a> · <a href="mailto:mahsunse@gmail.com">İletişim</a></span>
   </div>
 </footer>
 
@@ -353,7 +441,7 @@
   document.querySelectorAll('a[aria-disabled="true"]').forEach(a => a.addEventListener("click", e => e.preventDefault()));
   // Telefondaki ekranlar: 3,5 sn'de bir sıradaki.
   (() => {
-    const ekranlar = [...document.querySelectorAll(".screen img")];
+    const ekranlar = [...document.querySelectorAll(".hero .screen img")];
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let i = 0;
     setInterval(() => {

@@ -1,12 +1,12 @@
 # vadelio-site (proje özeti)
 
-> Son güncelleme: 2026-11-04
+> Son güncelleme: 2026-11-14
 
 https://vadelio.com.tr sitesinin yayın deposu (herkese açık). Cloudflare Pages `vadelio-site` projesi `public/`
 klasörünü yayınlar; **`main`'e push = otomatik yayın**. Derleme adımı yok, düz HTML. Asıl kaynak bu depo.
 
-- `public/index.html`: Vadelio tanıtım (TR) · `public/privacy/`: gizlilik politikası
-- `public/shots/`: uygulama ekranları · `public/og.png`: paylaşım görseli
+- `public/index.html`: Vadelio tanıtım (TR) · `public/privacy/`: gizlilik politikası · `public/destek/`: destek sayfası (App Store destek URL'si, Apple 1.5; iletişim + SSS)
+- `public/shots/`: uygulama ekranları (1.2.0, uygulama deposundaki `integration_test/tur_test.dart` turundan, 540 px; iPad için `ipad-nakit-akisi.jpg`) · `public/og.png`: paylaşım görseli
 - `public/kredi-hesaplama/`, `public/mevduat-hesaplama/`: ücretsiz web hesaplayıcıları (düz JS). Çekirdek
   `public/hesap/vadelio-hesap.js` uygulamadaki `lib/plan.dart`, `tarih.dart`, `mevduat.dart`'ın birebir karşılığı;
   uygulamada kural, bayram ya da stopaj değişirse burayı da güncelle. Mağaza bağlantıları `public/hesap/arayuz.js` `MAGAZA`.
