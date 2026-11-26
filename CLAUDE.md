@@ -12,7 +12,7 @@ klasörünü yayınlar; **`main`'e push = otomatik yayın**. Derleme adımı yok
   uygulamada kural, bayram ya da stopaj değişirse burayı da güncelle. Mağaza bağlantıları `public/hesap/arayuz.js` `MAGAZA`.
 - Doğrulama: `node --test tests/hesap.test.js` (Dart testlerindeki örnekler) ve
   `cd tests/dart-karsilastir && dart run dart_uret.dart > /tmp/d.json && node js_karsilastir.js ../../public/hesap/vadelio-hesap.js /tmp/d.json`
-  (800 rastgele örnekte Dart ile JS'i karşılaştırır; `~/Desktop/ilk_uygulamam` gerekir).
+  (800 rastgele örnekte Dart ile JS'i karşılaştırır; `~/Projeler/ilk_uygulamam` gerekir).
 - Alan adı Natro'da; ad sunucuları 05.11.2026'da cleo/daisy.ns.cloudflare.com yapıldı (Cloudflare Free plan). .tr kayıt merkezinde geçiş bekleniyordu.
 - www.vadelio.com.tr → vadelio.com.tr yönlendirmesi Cloudflare'de (Redirect Rule), depoda değil.
 - Eski adresler: vitrinly.app/vadelio/ → buraya 301 (vitrinly-site `_redirects`).

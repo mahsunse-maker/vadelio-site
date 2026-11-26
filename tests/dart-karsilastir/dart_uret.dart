@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
-import 'file:///Users/mahsunse/Desktop/ilk_uygulamam/lib/plan.dart';
-import 'file:///Users/mahsunse/Desktop/ilk_uygulamam/lib/mevduat.dart';
-import 'file:///Users/mahsunse/Desktop/ilk_uygulamam/lib/tarih.dart';
+import 'file:///Users/mahsunse/Projeler/ilk_uygulamam/lib/plan.dart';
+import 'file:///Users/mahsunse/Projeler/ilk_uygulamam/lib/mevduat.dart';
+import 'file:///Users/mahsunse/Projeler/ilk_uygulamam/lib/tarih.dart';
 
 String? iso(DateTime? t) => t == null ? null : tarihFormat(t);
 
